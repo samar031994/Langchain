@@ -15,7 +15,7 @@ def scrape_linkedin_profile(url, mock=False):
             "https://raw.githubusercontent.com/samarmanjeshwar/LangChain/main/ice_breaker/mock_linkedin_profile.json"
         )
     else:
-        linkedin_endpoint = "https://www.linkedin.com/in/eden-marco/"
+        linkedin_endpoint = url
         api_endpoint = "https://api.scrapin.io/enrichment/profile"
         params = {
             "apikey": os.environ.get("SCRAPIN_API_KEY"),

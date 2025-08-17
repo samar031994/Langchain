@@ -4,12 +4,16 @@ from dotenv import load_dotenv
 from langchain.prompts.prompt import PromptTemplate
 from langchain_openai import ChatOpenAI
 from third_party.linked_in import scrape_linkedin_profile
+from agents.linkedin_lookup_agent import lookup
 from pprint import PrettyPrinter
 
+load_dotenv()
 pp = PrettyPrinter(indent=4)
 
-if __name__ == "__main__":
-    load_dotenv()
+def ice_break_with(name: str) -> str:
+    linkedin_url = lookup(name=name)
+    pp.pprint(linkedin_url)
+
     summary_template = """
         given the Linkedin information {information} about a person, I want you to create:
         1. A short summary
@@ -25,7 +29,10 @@ if __name__ == "__main__":
     )
     chain = summary_prompt_template | llm
     linkedin_data = scrape_linkedin_profile(
-        url="https://www.linkedin.com/in/eden-marco/"
+        url=linkedin_url
     )
     res = chain.invoke(input={"information": linkedin_data})
     pp.pprint(res.content)
+
+if __name__ == "__main__":
+    ice_break_with(name="Samar Manjeshwar")
